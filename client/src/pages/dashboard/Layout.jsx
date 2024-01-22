@@ -1,34 +1,38 @@
-import { Outlet } from "react-router-dom"
+import { Outlet, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react";
 import Aside from "./Aside"
 import Header from "./Header"
 
 
 export default function DashboardLayout() {
+    const navigate = useNavigate();
     const [user, setUser] = useState(null);
     useEffect(() => {
-        fetch('http://localhost:3000/login', {
+        fetch('/api/status', {
             method: 'GET',
             credentials: 'include',
-        })
-            .then((res) => {
-                if (res.status === 200) {
-                    return res.json()
-                }
-                throw new Error('Authentication Failed');
-            })
-            .then((data) => {
-                setUser(data.user);
-            }).catch((err) => {
-                console.log(err);
-            });
+        }).then((res) => {
+            if (res.status >= 400) {
+                navigate('/login');
+            }
+            return res.json()
+        }).then((data) => {
+            setUser(data.user);
+        }).catch((err) => {
+            console.log(err);
+        });
     }, []);
 
     return (
         <>
-            <Header user={user}/>
-            <Aside />
-            <Outlet />
+            {user &&
+                <div>
+                    <Header user={user} />
+                    <Aside />
+                    <Outlet />
+                </div>
+
+            }
         </>
     )
 }
