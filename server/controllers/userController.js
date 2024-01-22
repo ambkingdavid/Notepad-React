@@ -1,12 +1,45 @@
-import { formatDate } from '../utils/helpers.js'
+import bcrypt from 'bcrypt';
+// import { formatDate } from '../utils/helpers.js'
 import User from '../models/user.model.js';
 import Note from '../models/note.model.js';
 
 
 class UserController {
+  static async register(req, res, next) {
+    const userData = req.body;
+    console.log(userData)
+
+    try {
+      const user = await User.findOne({ email: userData.email});
+      if ( user ) {
+        throw new Error('The email is already in use by another user');
+      }
+    } catch (err) {
+      return res.status(400).send({
+        success: false,
+        message: err,
+      });
+    }
+
+    try {
+      const salt = bcrypt.genSaltSync(10);
+      userData.password = await bcrypt.hash(userData.password, salt);
+      await User.create(userData);
+    } catch (err) {
+      console.log(err)
+      return res.status(500).send({
+        success: false,
+        message: err,
+      })
+    }
+
+    res.status(201).send({
+      success: true,
+      message: 'User has been registed successfully',
+    });
+  }
+
   static async notes(req, res, next) {
-    console.log('im here')
-    const user = await User.findById(req.user.id);
     const query = {
       createdBy: req.user.id,
     };
@@ -22,15 +55,14 @@ class UserController {
 
     notesObj = notesObj.skip(skip).limit(limit);
 
-    const numOfPage = Math.ceil(totalNotes / limit);
+    const numOfPages = Math.ceil(totalNotes / limit);
 
     const notes = await notesObj;
 
     res.status(200).json({
-      user,
       notes,
       totalNotes,
-      numOfPage,
+      numOfPages,
       page,
       limit,
     });
@@ -47,7 +79,7 @@ class UserController {
     const newNote = await Note.create(req.body);
 
     res.status(201).send({
-        noteId: newNote._id,
+      noteId: newNote._id,
     });
   }
 
@@ -72,7 +104,7 @@ class UserController {
   }
 
   static async deleteNote(req, res) {
-    const note = await Note.findOne({ _id: req.params.id}).where(req.user.id);
+    const note = await Note.findOne({ _id: req.params.id }).where(req.user.id);
     if (!note) {
       return res.status(404).render('404');
     }

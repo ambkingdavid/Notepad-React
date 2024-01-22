@@ -2,7 +2,10 @@ const isLoggedIn = (req, res, next) => {
     if (req.user) {
         next();
     } else {
-        res.status(302).redirect('/auth/google');
+        return res.status(401).send({
+            success: 'false',
+            message: 'User not logged in'
+        });
     }
 }
 

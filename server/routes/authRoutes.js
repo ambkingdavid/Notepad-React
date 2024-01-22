@@ -1,11 +1,31 @@
 import express from 'express';
+import LocalStrategy from 'passport-local';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import passport from 'passport';
-import dotenv from 'dotenv'
+import 'dotenv/config'
 import User from '../models/user.model.js'
-dotenv.config()
+import isLoggedIn from '../middleware/authentication.js';
+
 
 const router = express.Router();
+
+passport.use(new LocalStrategy(
+  async (username, password, done) => {
+    try {
+      const user = await User.findOne({ email: username })
+      if (!user) {
+        done(null, false);
+      }
+      if (!user.verifyPassword(password)) {
+        done(null, false);
+      }
+      console.log('useer found')
+      done(null, user);
+    } catch (error) {
+      done(error)
+    }
+  }
+));
 
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
@@ -14,18 +34,17 @@ passport.use(new GoogleStrategy({
 },
   async (accessToken, refreshToken, profile, done) => {
     try {
-      const user = await User.findOne({ googleId: profile.id });
+      const user = await User.findOne({ email: profile.emails[0].value });
       if (user) {
         done(null, user);
       } else {
         const newUser = await User.create({
-          googleId: profile.id,
-          fullName: profile.displayName,
           firstName: profile.name.givenName,
           lastName: profile.name.familyName,
           email: profile.emails[0].value,
           profileImage: profile.photos[0].value,
         });
+        done(null, newUser);
       }
     } catch (err) {
       console.log(err);
@@ -42,16 +61,27 @@ router.get('/google/callback',
     successRedirect: process.env.CLIENT_URL + '/dashboard'
   }));
 
-router.get('/login', (req, res) => {
-  if (!req.user) {
-    return res.status(401).redirect(process.env.CLIENT_URL)
-  }
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (!user) {
+      return res.status(401).send('Authentication failed');
+    }
+    req.logIn(user, (err) => {
+      if (err) {
+        return res.status(500).send('Internal Server Error');
+      }
+      return res.send('Login successful');
+    });
+  })(req, res, next);
+});
+
+router.get('/status', isLoggedIn, (req, res) => {
   res.status(200).send({
-    success: true,
-    message: 'Login Successful',
+    success: 'true',
+    message: 'User is logged in',
     user: req.user,
   })
-});
+})
 
 router.get('/logout', (req, res, next) => {
   req.session.destroy((err) => {
@@ -66,13 +96,15 @@ router.get('/logout', (req, res, next) => {
 });
 
 passport.serializeUser((user, done) => {
-  done(null, { id: user.id });
+  done(null, user._id);
 });
 
-passport.deserializeUser(async (user, done) => {
-  const obj = await User.findById(user.id);
-  if (obj) {
-    done(null, obj);
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (error) {
+    done(err);
   }
 });
 

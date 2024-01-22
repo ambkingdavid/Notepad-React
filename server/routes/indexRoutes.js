@@ -1,14 +1,10 @@
 import { Router } from 'express';
+import UserController from '../controllers/userController.js';
+
 
 const router = Router();
 
-router.get('/homepage', (req, res) => {
-    res.send(401).send({
-        success: false,
-        message: 'Unauthorized login',
-    });
-})
-
+// POST - Register a new user
 
 
 

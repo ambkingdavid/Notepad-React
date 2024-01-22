@@ -10,3 +10,5 @@ export const formatDate = (date) => {
   const timeAgo = formatDistanceToNow(parsedDate, { addSuffix: true });
   return timeAgo
 };
+
+export const verifyPassword = (password)

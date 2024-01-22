@@ -15,6 +15,7 @@ router.delete('/note/:id', isLoggedIn, UserController.deleteNote);
 router.put('/note/:id', isLoggedIn, UserController.updateNote);
 
 // POST
+router.post('/register', UserController.register);
 router.post('/addNote', isLoggedIn, UserController.addNote);
 
 export default router;

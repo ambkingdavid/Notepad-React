@@ -18,7 +18,7 @@ const errorHandler = (err, req, res, next) => {
       defaultErrors.message = `${Object.keys(err.keyValue)} must be unique`;
      }
   
-     res.status(defaultErrors.statusCode).send({ message: defaultErrors.message });
+     return res.status(defaultErrors.statusCode).send({ message: defaultErrors.message });
   };
   
   export default errorHandler;
