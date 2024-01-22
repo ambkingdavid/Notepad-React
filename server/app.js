@@ -4,7 +4,7 @@ import mongoSanitize from "express-mongo-sanitize";
 // package imports
 import 'express-async-errors';
 import express from 'express';
-import dotenv from 'dotenv';
+import 'dotenv/config';
 import cors from 'cors';
 import path from 'path';
 import morgan from 'morgan';
@@ -19,11 +19,9 @@ import mongoClient from './config/db.js';
 import swaggerUi from "swagger-ui-express";
 import swaggerDoc from "swagger-jsdoc";
 // routes
+import indexRoutes from './routes/indexRoutes.js'
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
-
-// dotenv config
-dotenv.config();
 
 // connect to Database
 await mongoClient();
@@ -33,8 +31,8 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Get Hired Hub',
-      description: "A hub to land opportunities",
+      title: 'NotePad-React app',
+      description: "A NotePad app built with the MERN stack",
     },
     servers: [
       {
