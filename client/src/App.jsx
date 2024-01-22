@@ -4,9 +4,11 @@ import Layout from './pages/Layout';
 import Home from './pages/Home';
 import DashboardLayout from './pages/dashboard/Layout';
 import DashboardHome from './pages/dashboard/Home';
-import Component from './pages/Button';
+
 import ViewNote from './pages/dashboard/ViewNote';
 import NewNote from './pages/dashboard/NewNote';
+import Register from './pages/Register';
+import Login from './pages/Login';
 
 
 function App() {
@@ -17,13 +19,14 @@ function App() {
         <Routes>
           <Route path='/' element={<Layout />}>
             <Route index element={<Home />} />
+            <Route path='/register' element={<Register />} />
+            <Route path='/login' element={<Login />} />
           </Route>
           <Route path='/dashboard' element={<DashboardLayout />} >
             <Route index element={<DashboardHome />} />
             <Route path='/dashboard/viewnote' element={<ViewNote />} />
             <Route path='/dashboard/newnote' element={<NewNote />} />
           </Route>
-          <Route path='/button' element={<Component />} />
         </Routes>
       </TestContextProvider>
     </BrowserRouter>
