@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 export default function Header({ user }) {
@@ -11,7 +11,7 @@ export default function Header({ user }) {
     }
 
     function handleLogout() {
-        fetch('http://localhost:3000/logout', {
+        fetch('/api/logout', {
             credentials: 'include'
         }).then((res) => {
             navigate('/');
