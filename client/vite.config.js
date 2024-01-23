@@ -4,7 +4,7 @@ import 'dotenv/config'
 
 const MODE = process.env.MODE;
 
-const URL = MODE === 'production'? 'https://notepad-server-at29.onrender.com' : 'http://localhost:3000'
+const URL = MODE === 'development'? 'http://localhost:3000' : 'https://notepad-server-at29.onrender.com'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
