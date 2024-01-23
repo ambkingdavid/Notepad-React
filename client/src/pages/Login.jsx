@@ -1,17 +1,20 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import 'dotenv/config'
 
 export default function Login() {
     const navigate = useNavigate()
     const [inputs, setInputs] = useState({});
+    const URI = process.env.MODE === 'production'? 'https://notepad-server-at29.onrender.com' : 'http://localhost:3000'
 
     function handleGoogleSignup() {
-        window.open('http://localhost:3000/auth/google', '_self');
+        window.open(`${url}/auth/google`, '_self');
     }
 
     function handleLogin(e) {
+        const url = process.env.MODE === 'production'? `${URI}/login` : '/api/login';
         e.preventDefault();
-        fetch('/api/login', {
+        fetch(url, {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',

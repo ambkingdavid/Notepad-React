@@ -7,6 +7,8 @@ export default function NewNote() {
     const navigate = useNavigate();
     const [inputs, setInputs] = useState({});
     const [value, setValue] = useState(`<h1 style="text-align: center; font-weight: bold;">Note title...</h1><p>Write here...</p>`);
+    const URI = process.env.MODE === 'production'? 'https://notepad-server-at29.onrender.com' : 'http://localhost:3000';
+
     const htmlString = value;
 
     const content = document.createElement('div');
@@ -22,7 +24,7 @@ export default function NewNote() {
 
     function handleSubmit(e) {
         e.preventDefault();
-        const url = '/api/user/addNote';
+        const url = process.env.MODE === 'production'? `${URI}/user/addNote` : `/api/user/addNote`;
        
         fetch(url, {
             credentials: 'include',

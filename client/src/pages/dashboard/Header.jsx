@@ -5,13 +5,15 @@ import { useNavigate } from "react-router-dom";
 export default function Header({ user }) {
     const [dropdown, setDropdown] = useState(false);
     const navigate = useNavigate();
+    const URI = process.env.MODE === 'production'? 'https://notepad-server-at29.onrender.com' : 'http://localhost:3000';
 
     function handleDropdown() {
         setDropdown(!dropdown)
     }
 
     function handleLogout() {
-        fetch('/api/logout', {
+        const url = process.env.MODE === 'production'? `${URI}/logout` : '/api/logout';
+        fetch(url, {
             credentials: 'include'
         }).then((res) => {
             navigate('/');

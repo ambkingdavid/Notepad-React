@@ -9,9 +9,11 @@ export default function DashboardHome() {
     const [numOfPages, setNumOfPages] = useState(0);
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(6);
+    const URI = process.env.MODE === 'production'? 'https://notepad-server-at29.onrender.com' : 'http://localhost:3000';
 
     useEffect(() => {
-        fetch('/api/user/notes', {
+        const url = process.env.MODE === 'production'? `${URI}/user/notes` : `/api/user/notes`;
+        fetch(url, {
             credentials: 'include'
         }).then((result) => {
             if (result.status !== 200) {
@@ -30,7 +32,9 @@ export default function DashboardHome() {
     }, []);
 
     function handlePrev() {
-        const url = `/api/user/notes?page=${Math.max(1, page - 1)}`
+        const prod_url = `${URI}/user/notes?page=${Math.max(1, page - 1)}`;
+        const dev_url = `/api/user/notes?page=${Math.max(1, page - 1)}`;
+        const url = process.env.MODE === 'production'? prod_url : dev_url;
         fetch(url, {
             credentials: 'include'
         }).then((result) => {
@@ -50,7 +54,9 @@ export default function DashboardHome() {
     }
 
     function handleNext() {
-        const url = `/api/user/notes?page=${Math.min(numOfPages, page + 1)}`
+        const prod_url = `${URI}/user/notes?page=${Math.min(numOfPages, page + 1)}`;
+        const dev_url = `/api/user/notes?page=${Math.min(numOfPages, page + 1)}`
+        const url = process.env.MODE === 'production'? prod_url : dev_url;
         fetch(url, {
             credentials: 'include'
         }).then((result) => {

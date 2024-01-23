@@ -4,17 +4,20 @@ import { useNavigate, Link } from "react-router-dom";
 export default function Register() {
     const navigate = useNavigate()
     const [inputs, setInputs] = useState({});
+    const URI = process.env.MODE === 'production'? 'https://notepad-server-at29.onrender.com' : 'http://localhost:3000'
+
 
     function handleGoogleSignup() {
-        window.open('http://localhost:3000/auth/google', '_self');
+        window.open(`${url}/auth/google`, '_self');
     }
 
     function handleCreate(e) {
+        const url = process.env.MODE === 'production'? `${URI}/login` : '/api/register';
         e.preventDefault();
         if (inputs.password !== inputs.confirmPassword) {
             return;
         }
-        fetch('/api/register', {
+        fetch(url, {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',
