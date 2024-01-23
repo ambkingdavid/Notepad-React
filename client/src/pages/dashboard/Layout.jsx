@@ -8,7 +8,7 @@ import Header from "./Header"
 export default function DashboardLayout() {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
-    const URI = process.env.MODE === 'production'? 'https://notepad-server-at29.onrender.com' : 'http://localhost:3000';
+    const URI = import.meta.env.MODE === 'production'? 'https://notepad-server-at29.onrender.com' : 'http://localhost:3000';
 
 
     useEffect(() => {
