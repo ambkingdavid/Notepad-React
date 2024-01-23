@@ -3,21 +3,22 @@ import { useNavigate, Link } from "react-router-dom";
 
 
 export default function Login() {
-    console.log(import.meta.env.MODE)
     const navigate = useNavigate()
     const [inputs, setInputs] = useState({});
-    const URI = import.meta.env.MODE === 'production'? 'https://notepad-server-at29.onrender.com' : 'http://localhost:3000'
-    console.log(URI)
+    const BASE_URL = import.meta.env.VITE_SERVER_URL;
+    console.log(BASE_URL)
 
     function handleGoogleSignup() {
-        window.open(`${URI}/auth/google`, '_self');
+        window.open(`${BASE_URL}/auth/google`, '_self');
     }
 
     function handleLogin(e) {
-        const url = import.meta.env.MODE === 'production'? `${URI}/login` : '/api/login';
         e.preventDefault();
+        const url =  `${BASE_URL}/login`;
+        console.log('url: ',url)
         fetch(url, {
             method: 'post',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -26,7 +27,7 @@ export default function Login() {
             if (response.status >= 400) {
                 throw new Error('Invalid Credentials');
             }
-            navigate('/dashboard')
+            navigate(`/dashboard?page=1`);
         }).catch((err) => {
             navigate('/login')
             console.log(err);

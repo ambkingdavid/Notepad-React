@@ -8,13 +8,13 @@ import Header from "./Header"
 export default function DashboardLayout() {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
-    const URI = import.meta.env.MODE === 'production'? 'https://notepad-server-at29.onrender.com' : 'http://localhost:3000';
+    const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
 
     useEffect(() => {
-        const url = import.meta.env.MODE === 'production'? `${URI}/status` : `/api/status`;
+        const url = `${BASE_URL}/status`;
         fetch(url, {
-            method: 'GET',
+            method: 'get',
             credentials: 'include',
         }).then((res) => {
             if (res.status >= 400) {

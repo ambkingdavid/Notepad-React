@@ -48,15 +48,15 @@ const spec = swaggerDoc(options);
 const app = express();
 
 //middelwares
+app.use(cors({
+  credentials: true,
+  origin: [process.env.CLIENT_URL, 'http://127.0.0.1:5173'],
+  methods: 'GET,PUT,POST,DELETE',
+}));
 app.use(helmet());
 app.use(mongoSanitize());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({
-  credentials: true,
-  origin: 'https://notepad-bpa9.onrender.com',
-  methods: 'GET,PUT,POST,DELETE'
-}));
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(
@@ -73,8 +73,8 @@ app.use(
     },
   })
 );
-const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, 'uploads')));
+// const __dirname = path.resolve();
+// app.use(express.static(path.join(__dirname, 'uploads')));
 
 app.use(passport.initialize());
 app.use(passport.session());

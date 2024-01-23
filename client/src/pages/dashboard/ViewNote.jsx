@@ -9,7 +9,7 @@ export default function ViewNote() {
     const { state } = useLocation();
     const [edit, setEdit] = useState(false);
     const [value, setValue] = useState(JSON.parse(state.content));
-    const URI = import.meta.env.MODE === 'production'? 'https://notepad-server-at29.onrender.com' : 'http://localhost:3000';
+    const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
     const htmlString = value;
 
@@ -21,7 +21,7 @@ export default function ViewNote() {
     const body = JSON.stringify(content.innerHTML);
 
     function handleDelete() {
-        const url = import.meta.env.MODE === 'production'? `${URI}/user/note/${state._id}` : `/api/user/note/${state._id}`;
+        const url = `${BASE_URL}/user/note/${state._id}`;
         fetch(url, {
             credentials: 'include',
             method: 'DELETE',
@@ -38,7 +38,7 @@ export default function ViewNote() {
     }
 
     function handleSubmit() {
-        const url = import.meta.env.MODE === 'production'? `${URI}/user/note/${state._id}` : `/api/user/note/${state._id}`;
+        const url = `${BASE_URL}/user/note/${state._id}`;
         fetch(url, {
             credentials: 'include',
             method: 'PUT',

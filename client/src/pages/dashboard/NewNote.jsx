@@ -8,7 +8,7 @@ export default function NewNote() {
     const navigate = useNavigate();
     const [inputs, setInputs] = useState({});
     const [value, setValue] = useState(`<h1 style="text-align: center; font-weight: bold;">Note title...</h1><p>Write here...</p>`);
-    const URI = import.meta.env.MODE === 'production'? 'https://notepad-server-at29.onrender.com' : 'http://localhost:3000';
+    const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
     const htmlString = value;
 
@@ -25,7 +25,7 @@ export default function NewNote() {
 
     function handleSubmit(e) {
         e.preventDefault();
-        const url = import.meta.env.MODE === 'production'? `${URI}/user/addNote` : `/api/user/addNote`;
+        const url = `${BASE_URL}/user/addNote`;
        
         fetch(url, {
             credentials: 'include',

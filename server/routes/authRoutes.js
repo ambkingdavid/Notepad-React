@@ -18,7 +18,6 @@ passport.use(new LocalStrategy(
       if (!user.verifyPassword(password)) {
         done(null, false);
       }
-      console.log('useer found')
       done(null, user);
     } catch (error) {
       done(error)
@@ -57,7 +56,7 @@ router.get('/auth/google',
 router.get('/google/callback',
   passport.authenticate('google', {
     failureRedirect: process.env.CLIENT_URL,
-    successRedirect: process.env.CLIENT_URL + '/dashboard'
+    successRedirect: process.env.CLIENT_URL + '/dashboard',
   }));
 
 router.post('/login', (req, res, next) => {

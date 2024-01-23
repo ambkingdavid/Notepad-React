@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { formatDate } from '../../../utils/helpers.js'
 
 
 export default function DashboardHome() {
+    const navigate = useNavigate()
     const [notes, setNotes] = useState([]);
     const [totalNotes, setTotalNotes] = useState(0);
     const [numOfPages, setNumOfPages] = useState(0);
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(6);
-    const URI = import.meta.env.MODE === 'production'? 'https://notepad-server-at29.onrender.com' : 'http://localhost:3000';
+    const BASE_URL = import.meta.env.VITE_SERVER_URL;
+
 
     useEffect(() => {
-        const url = import.meta.env.MODE === 'production'? `${URI}/user/notes` : `/api/user/notes`;
+        const url = `${BASE_URL}/user/notes?page=${page || 1}`;
         fetch(url, {
             credentials: 'include'
         }).then((result) => {
@@ -26,17 +28,16 @@ export default function DashboardHome() {
             setNumOfPages(data.numOfPages);
             setPage(data.page);
             setLimit(data.limit);
+            navigate(`/dashboard?page=${data.page}`)
         }).catch((err) => {
             console.log(err);
         })
     }, []);
 
     function handlePrev() {
-        const prod_url = `${URI}/user/notes?page=${Math.max(1, page - 1)}`;
-        const dev_url = `/api/user/notes?page=${Math.max(1, page - 1)}`;
-        const url = import.meta.env.MODE === 'production'? prod_url : dev_url;
+        const url = `${BASE_URL}/user/notes?page=${Math.max(1, page - 1)}`
         fetch(url, {
-            credentials: 'include'
+            credentials: 'include',
         }).then((result) => {
             if (result.status !== 200) {
                 throw new Error('cannot retrieve notes');
@@ -48,15 +49,14 @@ export default function DashboardHome() {
             setNumOfPages(data.numOfPages);
             setPage(data.page);
             setLimit(data.limit);
+            navigate(`/dashboard?page=${data.page}`)
         }).catch((err) => {
             console.log(err);
         })
     }
 
     function handleNext() {
-        const prod_url = `${URI}/user/notes?page=${Math.min(numOfPages, page + 1)}`;
-        const dev_url = `/api/user/notes?page=${Math.min(numOfPages, page + 1)}`
-        const url = import.meta.env.MODE === 'production'? prod_url : dev_url;
+        const url = `${BASE_URL}/user/notes?page=${Math.min(numOfPages, page + 1)}`
         fetch(url, {
             credentials: 'include'
         }).then((result) => {
@@ -65,12 +65,12 @@ export default function DashboardHome() {
             }
             return result.json()
         }).then((data) => {
-            console.log('next: ', data)
             setNotes(data.notes);
             setTotalNotes(data.totalNotes);
             setNumOfPages(data.numOfPages);
             setPage(data.page);
             setLimit(data.limit);
+            navigate(`/dashboard?page=${data.page}`)
         }).catch((err) => {
             console.log(err);
         })
@@ -97,19 +97,19 @@ export default function DashboardHome() {
                 </h3>
             </div>
             <div className="p-5">
-                <ul className="flex flex-col md:flex-row flex-wrap justify-evenly space-x-1 space-y-5">
+                <ul className="flex flex-col md:flex-row flex-wrap justify-around space-x-1 space-y-5">
                     <li className="hidden"></li>
                     {notes.map((note) => (
-                        <li key={note?._id} className="border border-gray-200 rounded-lg p-0 shadow-lg relative w-1/4">
-                            <div className="grid grid-rows-4">
+                        <li key={note?._id} className="border border-gray-200 rounded-lg p-0 shadow-lg relative md:w-1/4">
+                            <div className="grid grid-rows-3 md:grid-rows-4 lg:grid-rows-5">
                                 <div className="flex justify-center items-center">
                                     <p className="truncate text-center text-base md:text-lg lg:text-1xl xl:text-3xl font-bold tracking-tight text-gray-900 dark:text-white">{note.title}</p>
                                 </div>
-                                <div className="px-1 row-span-2">
+                                <div className="px-1 row-span-2 lg:row-span-3">
                                     <p className="line-clamp-3 mb-3 text-sm md:text-normal text-gray-700 dark:text-gray-400">{parseContent(note?.content)}</p>
                                 </div>
-                                <div className="">
-                                    <div className="text-center">
+                                <div className="flex flex-col">
+                                    <div className="text-center line-clamp-1 pr-2">
                                         <span className="text-xs align-text-bottom text-center">
                                             updated: {formatDate(note?.updatedAt)}
                                         </span>
