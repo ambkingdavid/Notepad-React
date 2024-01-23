@@ -91,10 +91,10 @@ export default function DashboardHome() {
                 </h3>
             </div>
             <div className="p-5">
-                <ul className="flex flex-col md:flex-row flex-wrap justify-around space-x-1 space-y-5">
+                <ul className="flex flex-col md:flex-row flex-wrap justify-evenly space-x-1 space-y-5">
                     <li className="hidden"></li>
                     {notes.map((note) => (
-                        <li key={note?._id} className={`border border-gray-200 rounded-lg p-0 shadow-lg relative ${(notes.length % 3) === 0 ? 'w-1/4' : 'w-5/12'}`}>
+                        <li key={note?._id} className="border border-gray-200 rounded-lg p-0 shadow-lg relative w-1/4">
                             <div className="grid grid-rows-4">
                                 <div className="flex justify-center items-center">
                                     <p className="truncate text-center text-base md:text-lg lg:text-1xl xl:text-3xl font-bold tracking-tight text-gray-900 dark:text-white">{note.title}</p>
