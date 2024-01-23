@@ -14,7 +14,7 @@ export default function Register() {
 
     function handleCreate(e) {
         e.preventDefault();
-        const url = `${BASE_URL}/register`;
+        const url = `${BASE_URL}/user/register`;
         if (inputs.password !== inputs.confirmPassword) {
             return;
         }
