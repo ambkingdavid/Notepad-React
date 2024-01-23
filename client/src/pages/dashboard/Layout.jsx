@@ -2,6 +2,7 @@ import { Outlet, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react";
 import Aside from "./Aside"
 import Header from "./Header"
+import 'dotenv/config'
 
 
 export default function DashboardLayout() {

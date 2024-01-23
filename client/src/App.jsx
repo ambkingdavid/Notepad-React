@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import { TestContextProvider } from './contextManager';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './pages/Layout';

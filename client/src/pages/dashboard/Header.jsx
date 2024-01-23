@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import 'dotenv/config'
 
 
 export default function Header({ user }) {

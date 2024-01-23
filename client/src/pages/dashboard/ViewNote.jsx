@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
+import 'dotenv/config'
+
 
 export default function ViewNote() {
     const navigate = useNavigate();

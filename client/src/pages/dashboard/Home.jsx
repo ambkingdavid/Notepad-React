@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { formatDate } from '../../../utils/helpers.js'
+import 'dotenv/config'
 
 
 export default function DashboardHome() {
