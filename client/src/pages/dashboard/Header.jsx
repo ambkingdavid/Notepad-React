@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import 'dotenv/config'
+
 
 
 export default function Header({ user }) {
     const [dropdown, setDropdown] = useState(false);
     const navigate = useNavigate();
-    const URI = process.env.MODE === 'production'? 'https://notepad-server-at29.onrender.com' : 'http://localhost:3000';
+    const URI = import.meta.env.MODE === 'production'? 'https://notepad-server-at29.onrender.com' : 'http://localhost:3000';
 
     function handleDropdown() {
         setDropdown(!dropdown)
     }
 
     function handleLogout() {
-        const url = process.env.MODE === 'production'? `${URI}/logout` : '/api/logout';
+        const url = import.meta.env.MODE === 'production'? `${URI}/logout` : '/api/logout';
         fetch(url, {
             credentials: 'include'
         }).then((res) => {

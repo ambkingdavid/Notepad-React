@@ -2,7 +2,7 @@ import { Outlet, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react";
 import Aside from "./Aside"
 import Header from "./Header"
-import 'dotenv/config'
+
 
 
 export default function DashboardLayout() {
@@ -12,7 +12,7 @@ export default function DashboardLayout() {
 
 
     useEffect(() => {
-        const url = process.env.MODE === 'production'? `${URI}/status` : `/api/status`;
+        const url = import.meta.env.MODE === 'production'? `${URI}/status` : `/api/status`;
         fetch(url, {
             method: 'GET',
             credentials: 'include',

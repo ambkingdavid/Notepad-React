@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
-import 'dotenv/config'
 
 
 export default function ViewNote() {
@@ -10,7 +9,7 @@ export default function ViewNote() {
     const { state } = useLocation();
     const [edit, setEdit] = useState(false);
     const [value, setValue] = useState(JSON.parse(state.content));
-    const URI = process.env.MODE === 'production'? 'https://notepad-server-at29.onrender.com' : 'http://localhost:3000';
+    const URI = import.meta.env.MODE === 'production'? 'https://notepad-server-at29.onrender.com' : 'http://localhost:3000';
 
     const htmlString = value;
 
@@ -22,7 +21,7 @@ export default function ViewNote() {
     const body = JSON.stringify(content.innerHTML);
 
     function handleDelete() {
-        const url = process.env.MODE === 'production'? `${URI}/user/note/${state._id}` : `/api/user/note/${state._id}`;
+        const url = import.meta.env.MODE === 'production'? `${URI}/user/note/${state._id}` : `/api/user/note/${state._id}`;
         fetch(url, {
             credentials: 'include',
             method: 'DELETE',
@@ -39,7 +38,7 @@ export default function ViewNote() {
     }
 
     function handleSubmit() {
-        const url = process.env.MODE === 'production'? `${URI}/user/note/${state._id}` : `/api/user/note/${state._id}`;
+        const url = import.meta.env.MODE === 'production'? `${URI}/user/note/${state._id}` : `/api/user/note/${state._id}`;
         fetch(url, {
             credentials: 'include',
             method: 'PUT',

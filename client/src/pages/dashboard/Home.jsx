@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { formatDate } from '../../../utils/helpers.js'
-import 'dotenv/config'
 
 
 export default function DashboardHome() {
@@ -10,10 +9,10 @@ export default function DashboardHome() {
     const [numOfPages, setNumOfPages] = useState(0);
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(6);
-    const URI = process.env.MODE === 'production'? 'https://notepad-server-at29.onrender.com' : 'http://localhost:3000';
+    const URI = import.meta.env.MODE === 'production'? 'https://notepad-server-at29.onrender.com' : 'http://localhost:3000';
 
     useEffect(() => {
-        const url = process.env.MODE === 'production'? `${URI}/user/notes` : `/api/user/notes`;
+        const url = import.meta.env.MODE === 'production'? `${URI}/user/notes` : `/api/user/notes`;
         fetch(url, {
             credentials: 'include'
         }).then((result) => {
@@ -35,7 +34,7 @@ export default function DashboardHome() {
     function handlePrev() {
         const prod_url = `${URI}/user/notes?page=${Math.max(1, page - 1)}`;
         const dev_url = `/api/user/notes?page=${Math.max(1, page - 1)}`;
-        const url = process.env.MODE === 'production'? prod_url : dev_url;
+        const url = import.meta.env.MODE === 'production'? prod_url : dev_url;
         fetch(url, {
             credentials: 'include'
         }).then((result) => {
@@ -57,7 +56,7 @@ export default function DashboardHome() {
     function handleNext() {
         const prod_url = `${URI}/user/notes?page=${Math.min(numOfPages, page + 1)}`;
         const dev_url = `/api/user/notes?page=${Math.min(numOfPages, page + 1)}`
-        const url = process.env.MODE === 'production'? prod_url : dev_url;
+        const url = import.meta.env.MODE === 'production'? prod_url : dev_url;
         fetch(url, {
             credentials: 'include'
         }).then((result) => {

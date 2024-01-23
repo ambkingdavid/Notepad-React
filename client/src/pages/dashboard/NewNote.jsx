@@ -2,14 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
-import 'dotenv/config'
 
 
 export default function NewNote() {
     const navigate = useNavigate();
     const [inputs, setInputs] = useState({});
     const [value, setValue] = useState(`<h1 style="text-align: center; font-weight: bold;">Note title...</h1><p>Write here...</p>`);
-    const URI = process.env.MODE === 'production'? 'https://notepad-server-at29.onrender.com' : 'http://localhost:3000';
+    const URI = import.meta.env.MODE === 'production'? 'https://notepad-server-at29.onrender.com' : 'http://localhost:3000';
 
     const htmlString = value;
 
@@ -26,7 +25,7 @@ export default function NewNote() {
 
     function handleSubmit(e) {
         e.preventDefault();
-        const url = process.env.MODE === 'production'? `${URI}/user/addNote` : `/api/user/addNote`;
+        const url = import.meta.env.MODE === 'production'? `${URI}/user/addNote` : `/api/user/addNote`;
        
         fetch(url, {
             credentials: 'include',
