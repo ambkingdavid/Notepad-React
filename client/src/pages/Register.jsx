@@ -5,16 +5,16 @@ import { useNavigate, Link } from "react-router-dom";
 export default function Register() {
     const navigate = useNavigate()
     const [inputs, setInputs] = useState({});
-    const URI = import.meta.env.MODE === 'production'? 'https://notepad-server-at29.onrender.com' : 'http://localhost:3000'
+    const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
 
     function handleGoogleSignup() {
-        window.open(`${URI}/auth/google`, '_self');
+        window.open(`${BASE_URL}/auth/google`, '_self');
     }
 
     function handleCreate(e) {
-        const url = import.meta.env.MODE === 'production'? `${URI}/login` : '/api/register';
         e.preventDefault();
+        const url = `${BASE_URL}/register`;
         if (inputs.password !== inputs.confirmPassword) {
             return;
         }

@@ -31,6 +31,7 @@ export default function DashboardHome() {
             navigate(`/dashboard?page=${data.page}`)
         }).catch((err) => {
             console.log(err);
+            navigate('/login')
         })
     }, []);
 
@@ -52,6 +53,7 @@ export default function DashboardHome() {
             navigate(`/dashboard?page=${data.page}`)
         }).catch((err) => {
             console.log(err);
+            navigate('/login')
         })
     }
 
@@ -73,6 +75,7 @@ export default function DashboardHome() {
             navigate(`/dashboard?page=${data.page}`)
         }).catch((err) => {
             console.log(err);
+            navigate('/login')
         })
     }
 
