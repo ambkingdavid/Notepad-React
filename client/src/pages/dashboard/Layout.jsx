@@ -13,6 +13,7 @@ export default function DashboardLayout() {
 
     useEffect(() => {
         const url = `${BASE_URL}/status`;
+        console.log(url)
         fetch(url, {
             method: 'get',
             credentials: 'include',

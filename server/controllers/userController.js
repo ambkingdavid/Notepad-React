@@ -7,7 +7,6 @@ import Note from '../models/note.model.js';
 class UserController {
   static async register(req, res, next) {
     const userData = req.body;
-    console.log(userData)
 
     try {
       const user = await User.findOne({ email: userData.email});
